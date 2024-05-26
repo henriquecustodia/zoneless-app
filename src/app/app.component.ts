@@ -1,17 +1,20 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, signal } from "@angular/core";
+import { RouterOutlet } from "@angular/router";
+import { timer } from "rxjs";
 
 @Component({
-  selector: 'app-root',
+  selector: "app-root",
   standalone: true,
   imports: [RouterOutlet],
-  template: `
-    <h1>Welcome to {{title}}!</h1>
-
-    <router-outlet />
-  `,
+  template: ` {{ title() }} `,
   styles: [],
 })
 export class AppComponent {
-  title = 'zoneless-app';
+  title = signal("zoneless-app");
+
+  constructor() {
+    timer(3000).subscribe(() => {
+      this.title.set("new title");
+    });
+  }
 }
